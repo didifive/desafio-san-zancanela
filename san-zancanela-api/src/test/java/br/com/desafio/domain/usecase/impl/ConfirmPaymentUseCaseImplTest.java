@@ -70,7 +70,7 @@ class ConfirmPaymentUseCaseImplTest {
     @Test
     void testStatusPaymentWithTotalExcessAndPartialStatus() {
         doNothing().when(clientService).findById(clientEntity.getId());
-        doNothing().when(sendToExternalQueue).send(any(PaymentItemModel.class));
+        doNothing().when(sendToExternalQueue).enqueuePayment(any(PaymentItemModel.class));
 
         when(chargeService.getOriginalAmountFromId(chargeEntity.getId()))
                 .thenReturn(chargeEntity.getOriginalAmount());
@@ -94,7 +94,7 @@ class ConfirmPaymentUseCaseImplTest {
 
         verify(clientService, times(1)).findById(clientEntity.getId());
         verify(chargeService, times(3)).getOriginalAmountFromId(anyString());
-        verify(sendToExternalQueue, times(3)).send(any(PaymentItemModel.class));
+        verify(sendToExternalQueue, times(3)).enqueuePayment(any(PaymentItemModel.class));
 
     }
 }
