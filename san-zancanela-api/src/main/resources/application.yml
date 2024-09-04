@@ -1,6 +1,6 @@
 aws:
   accessKeyId: ${AWS_ACCESS_KEY_ID:minhachaveacessoweb}
-  secretAccessKey: ${AWS_ACCESS_KEY_ID:minhachaveacessosecreta}
+  secretAccessKey: ${AWS_SECRET_ACCESS_KEY:minhachaveacessosecreta}
   region: ${AWS_REGION:regiaopadrao}
 
 san-zancanela-api:
