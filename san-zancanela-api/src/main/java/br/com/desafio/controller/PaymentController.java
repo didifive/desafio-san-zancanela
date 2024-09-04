@@ -8,6 +8,7 @@ import br.com.desafio.domain.usecase.ConfirmPaymentUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ public class PaymentController {
     }
 
     @PutMapping(path = "/payment")
+    @Transactional
     public ResponseEntity<PaymentResponseDto> setPayment(
             @RequestBody @Valid PaymentRequestDto request,
             BindingResult bindingResult) {

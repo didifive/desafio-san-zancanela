@@ -27,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler( { BadRequestException.class } )
-    public ResponseEntity<ApiErrorDto> handleEntityNotFoundException(BadRequestException e, HttpServletRequest request){
+    public ResponseEntity<ApiErrorDto> handleBadRequestException(BadRequestException e, HttpServletRequest request){
 
         ApiErrorDto err = new ApiErrorDto();
         err.setTimestamp(Instant.now());
