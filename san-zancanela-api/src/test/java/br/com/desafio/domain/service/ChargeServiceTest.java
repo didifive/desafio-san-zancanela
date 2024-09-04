@@ -29,7 +29,7 @@ class ChargeServiceTest {
     @Test
     void testFindById() {
         String id = "123";
-        ChargeModel expectedCharge = new ChargeModel(id, BigDecimal.TEN,  "clientId");
+        ChargeModel expectedCharge = new ChargeModel(id, BigDecimal.TEN);
         when(repository.findById(id)).thenReturn(Optional.of(expectedCharge));
 
         assertEquals(expectedCharge, chargeService.findById(id));

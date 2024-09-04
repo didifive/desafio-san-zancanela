@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 public record ChargeModel(
         String id,
-        BigDecimal originalAmount,
-        String clientId
+        BigDecimal originalAmount
 ) {
 }

@@ -6,7 +6,6 @@ import br.com.desafio.infraestructure.entity.ChargeEntity;
 import br.com.desafio.infraestructure.repository.jpa.ChargeJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,11 +22,5 @@ public class ChargeRepositoryImpl implements ChargeRepository {
         return chargeJpaRepository
                 .findById(id)
                 .map(ChargeEntity::toModel);
-    }
-
-    @Override
-    public List<ChargeModel> findAllByClientId(String clientId) {
-        return chargeJpaRepository.findAllByClientId(clientId)
-                .stream().map(ChargeEntity::toModel).toList();
     }
 }

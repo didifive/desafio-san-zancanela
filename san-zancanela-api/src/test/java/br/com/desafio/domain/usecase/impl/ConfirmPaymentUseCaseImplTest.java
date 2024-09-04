@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ConfirmPaymentUseCaseImplTest {
@@ -22,6 +22,7 @@ class ConfirmPaymentUseCaseImplTest {
     private ClientModel clientModel;
     private ChargeModel chargeModel;
     private ChargeModel chargeModel2;
+    private ChargeModel chargeModel3;
     private PaymentModel paymentModel;
 
 
@@ -40,88 +41,49 @@ class ConfirmPaymentUseCaseImplTest {
 
         chargeModel = new ChargeModel(
                 "charge-1",
-                BigDecimal.valueOf(10.99),
-                clientModel.id()
+                BigDecimal.valueOf(100.99)
         );
 
         chargeModel2 = new ChargeModel(
                 "charge-2",
-                BigDecimal.valueOf(5.99),
-                clientModel.id()
+                BigDecimal.valueOf(5.99)
+        );
+
+        chargeModel3 = new ChargeModel(
+                "charge-3",
+                BigDecimal.valueOf(1000.00)
         );
 
         paymentModel = new PaymentModel(
                 clientModel.id(),
                 List.of(
-                        new PaymentItemModel(chargeModel.id(), BigDecimal.valueOf(10.99), null),
-                        new PaymentItemModel(chargeModel2.id(), BigDecimal.valueOf(5.99), null)
+                        new PaymentItemModel(chargeModel.id(), BigDecimal.valueOf(100.99), null),
+                        new PaymentItemModel(chargeModel2.id(), BigDecimal.valueOf(59.90), null),
+                        new PaymentItemModel(chargeModel3.id(), BigDecimal.valueOf(100.00), null)
                 )
         );
     }
 
     @Test
-    void testStatusPaymentWithTotalStatus() {
+    void testStatusPaymentWithTotalExcessAndPartialStatus() {
         when(clientService.findById(clientModel.id())).thenReturn(clientModel);
         when(chargeService.findById(chargeModel.id())).thenReturn(chargeModel);
         when(chargeService.findById(chargeModel2.id())).thenReturn(chargeModel2);
+        when(chargeService.findById(chargeModel3.id())).thenReturn(chargeModel3);
 
         PaymentModel result = confirmPaymentService.confirm(paymentModel);
 
-        assertAll("Assert status for all payments",
-                () -> result.paymentItems()
-                        .forEach(item ->
-                                assertEquals(PaymentStatus.TOTAL, item.paymentStatus()))
-        );
-
-    }
-
-    @Test
-    void testStatusPaymentWithPartialAndTotalStatus() {
-        PaymentModel paymentModelWithPartial = new PaymentModel(
-                clientModel.id(),
-                List.of(
-                        new PaymentItemModel(chargeModel.id(), BigDecimal.valueOf(1.99), null),
-                        new PaymentItemModel(chargeModel2.id(), BigDecimal.valueOf(5.99), null)
-                )
-        );
-
-        when(clientService.findById(clientModel.id())).thenReturn(clientModel);
-        when(chargeService.findById(chargeModel.id())).thenReturn(chargeModel);
-        when(chargeService.findById(chargeModel2.id())).thenReturn(chargeModel2);
-
-        PaymentModel result = confirmPaymentService.confirm(paymentModelWithPartial);
-
-        assertAll("Assert that PaymentModel as a item with PARTIAL and other with TOTAL",
+        assertAll("Assert that PaymentModel has a TOTAL, EXCESS and PARTIAL payment status",
                 () -> assertTrue(result.paymentItems().stream()
-                        .anyMatch(item -> item.paymentStatus() == PaymentStatus.PARTIAL)),
-                () -> assertTrue(result.paymentItems().stream()
-                        .anyMatch(item -> item.paymentStatus() == PaymentStatus.TOTAL))
-        );
-
-    }
-
-    @Test
-    void testStatusPaymentWithExcessAndPartialStatus() {
-        PaymentModel paymentModelWithPartial = new PaymentModel(
-                clientModel.id(),
-                List.of(
-                        new PaymentItemModel(chargeModel.id(), BigDecimal.valueOf(500.99), null),
-                        new PaymentItemModel(chargeModel2.id(), BigDecimal.valueOf(2.99), null)
-                )
-        );
-
-        when(clientService.findById(clientModel.id())).thenReturn(clientModel);
-        when(chargeService.findById(chargeModel.id())).thenReturn(chargeModel);
-        when(chargeService.findById(chargeModel2.id())).thenReturn(chargeModel2);
-
-        PaymentModel result = confirmPaymentService.confirm(paymentModelWithPartial);
-
-        assertAll("Assert that PaymentModel as a item with PARTIAL and other with TOTAL",
+                        .anyMatch(item -> item.paymentStatus() == PaymentStatus.TOTAL)),
                 () -> assertTrue(result.paymentItems().stream()
                         .anyMatch(item -> item.paymentStatus() == PaymentStatus.EXCESS)),
                 () -> assertTrue(result.paymentItems().stream()
                         .anyMatch(item -> item.paymentStatus() == PaymentStatus.PARTIAL))
         );
+
+        verify(clientService, times(1)).findById(clientModel.id());
+        verify(chargeService, times(3)).findById(anyString());
 
     }
 }
