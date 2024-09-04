@@ -1,6 +1,7 @@
 package br.com.desafio.domain.usecase.impl;
 
 import br.com.desafio.domain.model.*;
+import br.com.desafio.domain.usecase.PaymentQueueUseCase;
 import br.com.desafio.infraestructure.entity.ChargeEntity;
 import br.com.desafio.infraestructure.entity.ClientEntity;
 import br.com.desafio.infraestructure.service.ChargeService;
@@ -32,6 +33,8 @@ class ConfirmPaymentUseCaseImplTest {
     private ChargeService chargeService;
     @Mock
     private ClientService clientService;
+    @Mock
+    private PaymentQueueUseCase sendToExternalQueue;
 
 
     @InjectMocks
@@ -67,6 +70,7 @@ class ConfirmPaymentUseCaseImplTest {
     @Test
     void testStatusPaymentWithTotalExcessAndPartialStatus() {
         doNothing().when(clientService).findById(clientEntity.getId());
+        doNothing().when(sendToExternalQueue).send(any(PaymentItemModel.class));
 
         when(chargeService.getOriginalAmountFromId(chargeEntity.getId()))
                 .thenReturn(chargeEntity.getOriginalAmount());
@@ -90,6 +94,7 @@ class ConfirmPaymentUseCaseImplTest {
 
         verify(clientService, times(1)).findById(clientEntity.getId());
         verify(chargeService, times(3)).getOriginalAmountFromId(anyString());
+        verify(sendToExternalQueue, times(3)).send(any(PaymentItemModel.class));
 
     }
 }

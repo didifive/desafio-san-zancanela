@@ -3,6 +3,7 @@ package br.com.desafio.domain.usecase.impl;
 import br.com.desafio.domain.model.PaymentItemModel;
 import br.com.desafio.domain.model.PaymentModel;
 import br.com.desafio.domain.model.PaymentStatus;
+import br.com.desafio.domain.usecase.PaymentQueueUseCase;
 import br.com.desafio.infraestructure.service.ChargeService;
 import br.com.desafio.infraestructure.service.ClientService;
 import br.com.desafio.domain.usecase.ConfirmPaymentUseCase;
@@ -18,9 +19,12 @@ public class ConfirmPaymentUseCaseImpl implements ConfirmPaymentUseCase {
     private final ChargeService chargeService;
     private final ClientService clientService;
 
-    public ConfirmPaymentUseCaseImpl(ChargeService chargeService, ClientService clientService) {
+    private final PaymentQueueUseCase sendToExternalQueue;
+
+    public ConfirmPaymentUseCaseImpl(ChargeService chargeService, ClientService clientService, PaymentQueueUseCase sendToExternalQueue) {
         this.chargeService = chargeService;
         this.clientService = clientService;
+        this.sendToExternalQueue = sendToExternalQueue;
     }
 
     @Override
@@ -35,11 +39,15 @@ public class ConfirmPaymentUseCaseImpl implements ConfirmPaymentUseCase {
 
                             PaymentStatus paymentStatus = paymentStatus(item.paymentValue(), originalAmount);
 
-                            return new PaymentItemModel(
+                            PaymentItemModel result = new PaymentItemModel(
                                     item.chargeId(),
                                     item.paymentValue(),
                                     paymentStatus
                             );
+
+                            sendToExternalQueue.enqueuePayment(result);
+
+                            return result;
                         })
                         .toList();
 
