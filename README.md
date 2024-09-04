@@ -1,4 +1,14 @@
-#  San Zancanela
+![Repository language count](https://img.shields.io/github/languages/count/didifive/sanzancanela)
+![Repository code size](https://img.shields.io/github/languages/code-size/didifive/sanzancanela)
+[![GitHub last commit](https://img.shields.io/github/last-commit/didifive/sanzancanela?color=blue)](https://github.com/didifive/sanzancanela/commits/main)
+
+[![Made by Didi](https://img.shields.io/badge/made%20by-Didi-green)](https://luiszancanela.dev.br/)
+
+![Repository license](https://img.shields.io/github/license/didifive/peoplehub)
+
+[![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?logo=intellij-idea&logoColor=white)](https://www.jetbrains.com/idea/)
+
+# San Zancanela API
 
 ## Objetivo
 
@@ -12,6 +22,39 @@ Atender o que consta no "Desafio" abaixo para desenvolver funcionalidade que rec
 - Spring Web
 - JUnit 5
 
+
+## Testes
+
+Para executar os testes, no terminal acesse a pasta `san-zancanela-api` e utilize o comando `../gradlew test jacocoTestCoverageVerification jacocoTestReport`
+
+Depois é só acessar a pasta o arquivo `index.html` que está na pasta `build/reports/jacoco/test/html` para verificar o coverage como da imagem:  
+![Jacoco Coverage Report](docs/jacoco_coverage.PNG "Jacoco Coverage Report")
+
+## Executar o projeto
+
+No terminal, acesse a pasta `san-zancanela-api` e execute o comando `../gradlew bootRun`
+
+Isso irá fazer com que o sistema inicie e esteja pronto para receber as chamadas.
+
+Quando a aplicação está iniciada localmente ela disponibiliza o endpoint http://localhost:8080/api/v1/payment
+
+
+### Postman Collection
+
+Foi configurado um postman collection para realizar as chamadas, o arquivo do collection está disponível na pasta docs: `SanZancanela.postman_collection.json`.  
+Importanto a coleção irá ter as chamadas com teste configurado.  
+Postman Collection:  
+![Postman Collection](docs/postman_colletion.PNG "Postman Collection")  
+Postman request com sucesso:  
+![Postman](docs/postman.PNG "Postman")  
+Postman request com corpo inválido:  
+![Postman Bad Request](docs/postman_invalidrequestbody.PNG "Postman Bad Request")  
+Postman request com cliend_id inválido:  
+![Postman Invalid Client Id](docs/postman_invalidclientid.PNG "Postman Invalid Client Id")  
+Postman request com charge_id inválido:  
+![Postman Invalid Charge Id](docs/postman_invalidchargeid.PNG "Postman Invalid Charge Id")  
+Postman Run com testes:  
+![Postman Run Test](docs/postman_run.PNG "Postman Run Test")  
 
 
 ---
