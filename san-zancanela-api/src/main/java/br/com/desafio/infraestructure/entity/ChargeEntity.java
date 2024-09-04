@@ -4,10 +4,12 @@ import br.com.desafio.domain.model.ChargeModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 
-@Entity(name = "charges")
+@Entity
+@Table(name = "charges")
 public class ChargeEntity {
     @Id
     String id;
@@ -15,21 +17,10 @@ public class ChargeEntity {
     @ManyToOne
     ClientEntity client;
 
-    public ChargeEntity() {
-    }
-
-    public ChargeEntity(String id) {
-        this.id = id;
-    }
-
     public ChargeEntity(String id, BigDecimal originalAmount, ClientEntity client) {
         this.id = id;
         this.originalAmount = originalAmount;
         this.client = client;
-    }
-
-    public ChargeEntity(ChargeModel model) {
-        this(model.id(), model.originalAmount(), new ClientEntity(model.clientId()));
     }
 
 

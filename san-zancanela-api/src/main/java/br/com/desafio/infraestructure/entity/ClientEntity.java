@@ -3,25 +3,15 @@ package br.com.desafio.infraestructure.entity;
 import br.com.desafio.domain.model.ClientModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity(name = "clients")
+@Entity
+@Table(name = "clients")
 public class ClientEntity {
     @Id
     private String id;
     private String name;
 
-    public ClientEntity(String id) {
-        this.id = id;
-    }
-
-    public ClientEntity(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public ClientEntity(ClientModel model) {
-        this(model.id(), model.name());
-    }
 
     public ClientModel toModel() {
         return new ClientModel(
