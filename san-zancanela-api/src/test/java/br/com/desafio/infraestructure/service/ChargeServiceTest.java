@@ -1,8 +1,8 @@
-package br.com.desafio.domain.service;
+package br.com.desafio.infraestructure.service;
 
 import br.com.desafio.domain.exception.EntityNotFoundException;
-import br.com.desafio.domain.model.ChargeModel;
-import br.com.desafio.domain.repository.ChargeRepository;
+import br.com.desafio.infraestructure.entity.ChargeEntity;
+import br.com.desafio.infraestructure.repository.ChargeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,10 +29,14 @@ class ChargeServiceTest {
     @Test
     void testFindById() {
         String id = "123";
-        ChargeModel expectedCharge = new ChargeModel(id, BigDecimal.TEN);
+        ChargeEntity expectedCharge = new ChargeEntity();
+        expectedCharge.setId(id);
+        expectedCharge.setOriginalAmount(BigDecimal.TEN);
+
         when(repository.findById(id)).thenReturn(Optional.of(expectedCharge));
 
-        assertEquals(expectedCharge, chargeService.findById(id));
+        assertEquals(expectedCharge.getOriginalAmount(),
+                chargeService.getOriginalAmountFromId(id));
 
         verify(repository, times(1)).findById(id);
     }
@@ -43,10 +47,9 @@ class ChargeServiceTest {
         when(repository.findById(invalidId)).thenReturn(Optional.empty());
 
         assertThrowsWithMessage(EntityNotFoundException.class,
-                () -> chargeService.findById(invalidId),
+                () -> chargeService.getOriginalAmountFromId(invalidId),
                 "Charge not found");
 
-        // Assert
         verify(repository, times(1)).findById(invalidId);
     }
 }

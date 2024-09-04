@@ -1,8 +1,10 @@
 package br.com.desafio.domain.usecase.impl;
 
 import br.com.desafio.domain.model.*;
-import br.com.desafio.domain.service.ChargeService;
-import br.com.desafio.domain.service.ClientService;
+import br.com.desafio.infraestructure.entity.ChargeEntity;
+import br.com.desafio.infraestructure.entity.ClientEntity;
+import br.com.desafio.infraestructure.service.ChargeService;
+import br.com.desafio.infraestructure.service.ClientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +21,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ConfirmPaymentUseCaseImplTest {
 
-    private ClientModel clientModel;
-    private ChargeModel chargeModel;
-    private ChargeModel chargeModel2;
-    private ChargeModel chargeModel3;
+    private ClientEntity clientEntity;
+    private ChargeEntity chargeEntity;
+    private ChargeEntity chargeEntity2;
+    private ChargeEntity chargeEntity3;
     private PaymentModel paymentModel;
 
 
@@ -37,39 +39,43 @@ class ConfirmPaymentUseCaseImplTest {
 
     @BeforeEach
     void setup() {
-        clientModel = new ClientModel("clientId-123", "cliente");
+        clientEntity = new ClientEntity();
+        clientEntity.setId("client-1");
 
-        chargeModel = new ChargeModel(
-                "charge-1",
-                BigDecimal.valueOf(100.99)
-        );
+        chargeEntity = new ChargeEntity();
+        chargeEntity.setId("charge-1");
+        chargeEntity.setOriginalAmount(BigDecimal.valueOf(100.99));
 
-        chargeModel2 = new ChargeModel(
-                "charge-2",
-                BigDecimal.valueOf(5.99)
-        );
+        chargeEntity2 = new ChargeEntity();
+        chargeEntity2.setId("charge-2");
+        chargeEntity2.setOriginalAmount(BigDecimal.valueOf(5.99));
 
-        chargeModel3 = new ChargeModel(
-                "charge-3",
-                BigDecimal.valueOf(1000.00)
-        );
+        chargeEntity3 = new ChargeEntity();
+        chargeEntity3.setId("charge-3");
+        chargeEntity3.setOriginalAmount(BigDecimal.valueOf(1000.00));
 
         paymentModel = new PaymentModel(
-                clientModel.id(),
+                clientEntity.getId(),
                 List.of(
-                        new PaymentItemModel(chargeModel.id(), BigDecimal.valueOf(100.99), null),
-                        new PaymentItemModel(chargeModel2.id(), BigDecimal.valueOf(59.90), null),
-                        new PaymentItemModel(chargeModel3.id(), BigDecimal.valueOf(100.00), null)
+                        new PaymentItemModel(chargeEntity.getId(), BigDecimal.valueOf(100.99), null),
+                        new PaymentItemModel(chargeEntity2.getId(), BigDecimal.valueOf(59.90), null),
+                        new PaymentItemModel(chargeEntity3.getId(), BigDecimal.valueOf(100.00), null)
                 )
         );
     }
 
     @Test
     void testStatusPaymentWithTotalExcessAndPartialStatus() {
-        when(clientService.findById(clientModel.id())).thenReturn(clientModel);
-        when(chargeService.findById(chargeModel.id())).thenReturn(chargeModel);
-        when(chargeService.findById(chargeModel2.id())).thenReturn(chargeModel2);
-        when(chargeService.findById(chargeModel3.id())).thenReturn(chargeModel3);
+        doNothing().when(clientService).findById(clientEntity.getId());
+
+        when(chargeService.getOriginalAmountFromId(chargeEntity.getId()))
+                .thenReturn(chargeEntity.getOriginalAmount());
+
+        when(chargeService.getOriginalAmountFromId(chargeEntity2.getId()))
+                .thenReturn(chargeEntity2.getOriginalAmount());
+
+        when(chargeService.getOriginalAmountFromId(chargeEntity3.getId()))
+                .thenReturn(chargeEntity3.getOriginalAmount());
 
         PaymentModel result = confirmPaymentService.confirm(paymentModel);
 
@@ -82,8 +88,8 @@ class ConfirmPaymentUseCaseImplTest {
                         .anyMatch(item -> item.paymentStatus() == PaymentStatus.PARTIAL))
         );
 
-        verify(clientService, times(1)).findById(clientModel.id());
-        verify(chargeService, times(3)).findById(anyString());
+        verify(clientService, times(1)).findById(clientEntity.getId());
+        verify(chargeService, times(3)).getOriginalAmountFromId(anyString());
 
     }
 }

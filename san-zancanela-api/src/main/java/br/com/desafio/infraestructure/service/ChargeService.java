@@ -1,9 +1,10 @@
-package br.com.desafio.domain.service;
+package br.com.desafio.infraestructure.service;
 
 import br.com.desafio.domain.exception.EntityNotFoundException;
-import br.com.desafio.domain.model.ChargeModel;
-import br.com.desafio.domain.repository.ChargeRepository;
+import br.com.desafio.infraestructure.repository.ChargeRepository;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class ChargeService {
@@ -14,8 +15,9 @@ public class ChargeService {
         this.repository = repository;
     }
 
-    public ChargeModel findById(String id) {
+    public BigDecimal getOriginalAmountFromId(String id) {
         return repository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Charge not found"));
+                () -> new EntityNotFoundException("Charge not found"))
+                .getOriginalAmount();
     }
 }

@@ -3,8 +3,8 @@ package br.com.desafio.domain.usecase.impl;
 import br.com.desafio.domain.model.PaymentItemModel;
 import br.com.desafio.domain.model.PaymentModel;
 import br.com.desafio.domain.model.PaymentStatus;
-import br.com.desafio.domain.service.ChargeService;
-import br.com.desafio.domain.service.ClientService;
+import br.com.desafio.infraestructure.service.ChargeService;
+import br.com.desafio.infraestructure.service.ClientService;
 import br.com.desafio.domain.usecase.ConfirmPaymentUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +31,7 @@ public class ConfirmPaymentUseCaseImpl implements ConfirmPaymentUseCase {
         List<PaymentItemModel> paymentItemModelList =
                 paymentModel.paymentItems().stream()
                         .map(item -> {
-                            BigDecimal originalAmount = chargeService.findById(item.chargeId())
-                                    .originalAmount();
+                            BigDecimal originalAmount = chargeService.getOriginalAmountFromId(item.chargeId());
 
                             PaymentStatus paymentStatus = paymentStatus(item.paymentValue(), originalAmount);
 

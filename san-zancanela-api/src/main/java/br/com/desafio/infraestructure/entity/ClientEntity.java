@@ -1,6 +1,5 @@
 package br.com.desafio.infraestructure.entity;
 
-import br.com.desafio.domain.model.ClientModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -11,13 +10,6 @@ public class ClientEntity {
     @Id
     private String id;
     private String name;
-
-
-    public ClientModel toModel() {
-        return new ClientModel(
-                getId()
-        );
-    }
 
     public String getId() {
         return id;

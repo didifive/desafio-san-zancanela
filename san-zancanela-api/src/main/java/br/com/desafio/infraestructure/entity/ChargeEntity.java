@@ -1,6 +1,5 @@
 package br.com.desafio.infraestructure.entity;
 
-import br.com.desafio.domain.model.ChargeModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -13,14 +12,6 @@ public class ChargeEntity {
     @Id
     String id;
     BigDecimal originalAmount;
-
-
-    public ChargeModel toModel() {
-        return new ChargeModel(
-                getId(),
-                getOriginalAmount()
-        );
-    }
 
     public String getId() {
         return id;
