@@ -1,15 +1,15 @@
 package br.com.desafio.infraestructure.repository;
 
 import br.com.desafio.domain.model.ChargeModel;
-import br.com.desafio.domain.model.ClientModel;
 import br.com.desafio.domain.repository.ChargeRepository;
 import br.com.desafio.infraestructure.entity.ChargeEntity;
-import br.com.desafio.infraestructure.entity.ClientEntity;
 import br.com.desafio.infraestructure.repository.jpa.ChargeJpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class ChargeRepositoryImpl implements ChargeRepository {
 
     private final ChargeJpaRepository chargeJpaRepository;
