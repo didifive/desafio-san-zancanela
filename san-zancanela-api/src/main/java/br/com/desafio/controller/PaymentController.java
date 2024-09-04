@@ -34,7 +34,7 @@ public class PaymentController {
         verifyBindingResult(bindingResult);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(PaymentResponseDto.toDto(
                         service.confirm(request.toPaymentModel())));
     }
