@@ -1,8 +1,10 @@
-package br.com.desafio.domain.service;
+package br.com.desafio.domain.usecase.impl;
 
 import br.com.desafio.domain.model.PaymentItemModel;
 import br.com.desafio.domain.model.PaymentModel;
 import br.com.desafio.domain.model.PaymentStatus;
+import br.com.desafio.domain.service.ChargeService;
+import br.com.desafio.domain.service.ClientService;
 import br.com.desafio.domain.usecase.ConfirmPaymentUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +13,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class ConfirmPaymentService implements ConfirmPaymentUseCase {
+public class ConfirmPaymentUseCaseImpl implements ConfirmPaymentUseCase {
 
     private final ChargeService chargeService;
     private final ClientService clientService;
 
-    public ConfirmPaymentService(ChargeService chargeService, ClientService clientService) {
+    public ConfirmPaymentUseCaseImpl(ChargeService chargeService, ClientService clientService) {
         this.chargeService = chargeService;
         this.clientService = clientService;
     }

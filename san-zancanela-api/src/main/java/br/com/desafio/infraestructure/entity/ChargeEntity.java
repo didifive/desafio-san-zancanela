@@ -17,12 +17,6 @@ public class ChargeEntity {
     @ManyToOne
     ClientEntity client;
 
-    public ChargeEntity(String id, BigDecimal originalAmount, ClientEntity client) {
-        this.id = id;
-        this.originalAmount = originalAmount;
-        this.client = client;
-    }
-
 
     public ChargeModel toModel() {
         return new ChargeModel(

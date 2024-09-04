@@ -1,9 +1,6 @@
-package br.com.desafio.controller;
+package br.com.desafio.domain.exception;
 
 import br.com.desafio.controller.dto.ApiErrorDto;
-import br.com.desafio.domain.exception.BadRequestException;
-import br.com.desafio.domain.exception.EntityNotFoundException;
-import br.com.desafio.domain.exception.SanZancanelaApiException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

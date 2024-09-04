@@ -1,6 +1,8 @@
-package br.com.desafio.domain.service;
+package br.com.desafio.domain.usecase.impl;
 
 import br.com.desafio.domain.model.*;
+import br.com.desafio.domain.service.ChargeService;
+import br.com.desafio.domain.service.ClientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ConfirmPaymentServiceTest {
+class ConfirmPaymentUseCaseImplTest {
 
     private ClientModel clientModel;
     private ChargeModel chargeModel;
@@ -30,7 +32,7 @@ class ConfirmPaymentServiceTest {
 
 
     @InjectMocks
-    private ConfirmPaymentService confirmPaymentService;
+    private ConfirmPaymentUseCaseImpl confirmPaymentService;
 
     @BeforeEach
     void setup() {
