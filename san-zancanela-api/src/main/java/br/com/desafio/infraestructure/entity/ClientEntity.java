@@ -15,8 +15,7 @@ public class ClientEntity {
 
     public ClientModel toModel() {
         return new ClientModel(
-                getId(),
-                getName()
+                getId()
         );
     }
 
