@@ -1,21 +1,20 @@
 package br.com.desafio.controller.dto.response;
 
-import br.com.desafio.domain.model.PaymentItemModel;
 import br.com.desafio.domain.model.PaymentModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 public record PaymentResponseDto(@JsonProperty("client_id")
-                                String clientId,
+                                 String clientId,
                                  @JsonProperty("payment_items")
-                                List<PaymentItemResponseDto> paymentItems) {
+                                 List<PaymentItemResponseDto> paymentItems) {
 
-    public static synchronized PaymentResponseDto toResponseDto(PaymentModel paymentModel) {
+    public static synchronized PaymentResponseDto toDto(PaymentModel paymentModel) {
         return new PaymentResponseDto(
                 paymentModel.clientId(),
                 paymentModel.paymentItems().stream()
-                        .map(PaymentItemResponseDto::toResponseDto)
+                        .map(PaymentItemResponseDto::toDto)
                         .toList()
         );
     }
