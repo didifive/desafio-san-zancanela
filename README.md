@@ -105,8 +105,8 @@ Os requisitos não funcionais descrevem características do sistema que não est
 
 1. Teste unitários
    O caso de uso deve ser testavel através de testes unitários.
-   - ✅ R: Criado os testes unitários e adicionado jacoco plugin para geração de relatórios de testes e coverage.
+    - ✅ R: Criado os testes unitários e adicionado jacoco plugin para geração de relatórios de testes e coverage.
 
 2.  Tratamento de resposta e status code
    O sistema deve retornar uma resposta com status code 200 em caso de sucesso e 4XX em caso de erro
-   - ✅ R: Se tudo está ok, retorna 200, para caso tenha erro, foram criadas exceptions e configurado exception handler para tratar e desolver a resposta com objeto do tipo ApiErrorDto.
+    - ✅ R: Se tudo está ok, retorna 200, para caso tenha erro, foram criadas exceptions e configurado exception handler para tratar e desolver a resposta com objeto do tipo ApiErrorDto.
