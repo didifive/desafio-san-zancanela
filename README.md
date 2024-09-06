@@ -63,7 +63,7 @@ ao SQS, o sistema irá registrar o erro no log.
 No terminal, na pasta raiz do projeto, execute o comando:  
 
 ```bash
-./gradlew :san-zancanela-api:bootRun`
+./gradlew :san-zancanela-api:bootRun
 ```
 
 _Se o comando falhar no terminal, tente executar sem o "./" do começo_
