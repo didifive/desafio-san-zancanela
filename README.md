@@ -4,7 +4,7 @@
 
 [![Made by Didi](https://img.shields.io/badge/made%20by-Didi-green)](https://luiszancanela.dev.br/)
 
-![Repository license](https://img.shields.io/github/license/didifive/desafio-san-)
+![Repository license](https://img.shields.io/github/license/didifive/desafio-san-zancanela)
 
 [![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?logo=intellij-idea&logoColor=white)](https://www.jetbrains.com/idea/)
 
@@ -25,23 +25,57 @@ Atender o que consta no "Desafio" abaixo para desenvolver funcionalidade que rec
 
 ## Testes
 
-Para executar os testes, no terminal acesse a pasta `san-zancanela-api` e utilize o comando `../gradlew test jacocoTestCoverageVerification jacocoTestReport`
+Para executar os testes, no terminal acesse a pasta `san-zancanela-api` e utilize o comando abaixo:
+```bash
+./gradlew :san-zancanela-api:test :san-zancanela-api:jacocoTestReport
+```
 
-Depois é só acessar a pasta o arquivo `index.html` que está na pasta `build/reports/jacoco/test/html` para verificar o coverage como da imagem:  
+_Se o comando falhar no terminal, tente executar sem o "./" do começo_
+
+Depois é só acessar a pasta o arquivo `index.html` que está na pasta `san-zancanela-api/build/reports/jacoco/test/html` para verificar o coverage como da imagem:  
 ![Jacoco Coverage Report](docs/jacoco_coverage.PNG "Jacoco Coverage Report")
 
-## Executar o projeto
+## Executar a aplicação
 
-No terminal, acesse a pasta `san-zancanela-api` e execute o comando `../gradlew bootRun`
+### Configuração para SQS
 
-Isso irá fazer com que o sistema inicie e esteja pronto para receber as chamadas.
+Primeiramente é importante possuir ou criar recurso SQS na AWS para poder ter as informações necessárias para
+configurar as variáveis de ambiente abaixo:
+- AWS_ACCESS_KEY_ID: Chave de acesso da sua conta AWS. Uma string alfanumérica que identifica a sua conta AWS
+  usada para autenticar as requisições feitas ao SQS.
+- AWS_SECRET_ACCESS_KEY: Chave secreta da sua conta AWS. É uma string alfanumérica usada em conjunto
+  com a chave de acesso para autenticar as requisições feitas ao SQS.
+- AWS_REGION: Região da AWS onde o recurso SQS está localizado. Por exemplo, se o seu recurso SQS está localizado
+  na região "us-east-1", você deve configurar essa variável com o valor "us-east-1".
+- AWS_ACCOUNT_ID: ID da sua conta AWS. É um número único que identifica sua conta AWS e é usado para configurar o recurso SQS.
 
-Quando a aplicação está iniciada localmente ela disponibiliza o endpoint http://localhost:8080/api/v1/payment
+_Observação: as variáveis de ambiente serão carregadas automaticamente no properties do spring através do que foi definido
+em `application.yml` disponível em `san-zancanela-api/src/main/resources`._
+
+#### Erro ao tentar enviar mensagem ao SQS
+
+Caso alguma variável de ambiente não esteja definida ou for inválida, ou alguma excessão ocorrer ao tentar enviar mensagem
+ao SQS, o sistema irá registrar o erro no log.  
+![Send To SQS Log Error](docs/send_to_sqs_log.PNG "Send To SQS Log Error")
+
+### Iniciando a aplicação
+
+No terminal, na pasta raiz do projeto, execute o comando:  
+
+```bash
+./gradlew :san-zancanela-api:bootRun`
+```
+
+_Se o comando falhar no terminal, tente executar sem o "./" do começo_
+
+O comando acima irá fazer com que o sistema inicie e esteja pronto para receber as chamadas.
+
+Quando a aplicação está iniciada localmente ela disponibilizará o endpoint http://localhost:8080/api/v1/payment
 
 
 ### Postman Collection
 
-Foi configurado um postman collection para realizar as chamadas, o arquivo do collection está disponível na pasta docs: `SanZancanela.postman_collection.json`.  
+Foi configurado um postman collection para realizar as chamadas, o arquivo do collection está disponível `docs/SanZancanela.postman_collection.json`.  
 Importanto a coleção irá ter as chamadas com teste configurado.  
 Postman Collection:  
 ![Postman Collection](docs/postman_colletion.PNG "Postman Collection")  
@@ -54,20 +88,7 @@ Postman request com cliend_id inválido:
 Postman request com charge_id inválido:  
 ![Postman Invalid Charge Id](docs/postman_invalidchargeid.PNG "Postman Invalid Charge Id")  
 Postman Run com testes:  
-![Postman Run Test](docs/postman_run.PNG "Postman Run Test")  
-
-### Configuração para SQS
-
-Para que o envio da mensagem seja realizado para a fila do SQS é necessário ter as variáveis de ambiente na execução da aplicação:
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-- AWS_REGION
-- AWS_ACCOUNT_ID
-
-#### Erro ao tentar enviar mensagem ao SQS
-Caso ocorrer excessão na tentativa de envio de mensagem ao SQS, o sistema irá registrar o erro no log
-![Send To SQS Log Error](docs/send_to_sqs_log.PNG "Send To SQS Log Error")
-
+![Postman Run Test](docs/postman_run.PNG "Postman Run Test")
 
 ---
 
